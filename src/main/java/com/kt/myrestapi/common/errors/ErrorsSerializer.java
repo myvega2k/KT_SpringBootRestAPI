@@ -14,13 +14,19 @@ public class ErrorsSerializer extends JsonSerializer<Errors>{
 	@Override
 	public void serialize(Errors errors, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 		gen.writeStartArray();
+        //Iterable.forEach(Consumer) Consumer의 추상메서드 void accept(T t)
         errors.getFieldErrors().forEach(e -> {
             try {
                 gen.writeStartObject();
+                //Field 의 이름
                 gen.writeStringField("field", e.getField());
+                //Field가 속한 DTO 객체 의 이름
                 gen.writeStringField("objectName", e.getObjectName());
+                //NotEmpty, NotBlank
                 gen.writeStringField("code", e.getCode());
+                //Error Message
                 gen.writeStringField("defaultMessage", e.getDefaultMessage());
+                //잘못 입력된 값
                 Object rejectedValue = e.getRejectedValue();
                 if (rejectedValue != null) {
                     gen.writeStringField("rejectedValue", rejectedValue.toString());
