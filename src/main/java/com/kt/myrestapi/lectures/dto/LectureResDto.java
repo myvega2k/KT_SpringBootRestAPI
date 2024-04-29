@@ -1,23 +1,18 @@
-package com.kt.myrestapi.lectures;
+package com.kt.myrestapi.lectures.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
-@Builder @AllArgsConstructor
+@Data
+@Builder
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(of="id")
-@Entity
-@Table(name = "lectures")
-public class Lecture {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+public class LectureResDto {
     private Integer id;
-
-    @Column(nullable = false)
     private String name;
     private String description;
 
@@ -29,15 +24,12 @@ public class Lecture {
     private LocalDateTime beginLectureDateTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime endLectureDateTime;
-    
+
     private String location;
     private int basePrice;
     private int maxPrice;
     private int limitOfEnrollment;
-
     private boolean offline;
     private boolean free;
-
-    @Enumerated(EnumType.STRING)
-    private LectureStatus lectureStatus = LectureStatus.DRAFT;
-}    
+    private String email;
+}
