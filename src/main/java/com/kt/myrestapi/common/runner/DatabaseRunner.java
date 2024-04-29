@@ -1,4 +1,4 @@
-package com.kt.myrestapi.common;
+package com.kt.myrestapi.common.runner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
