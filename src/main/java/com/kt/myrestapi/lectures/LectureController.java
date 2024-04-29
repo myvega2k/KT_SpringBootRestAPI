@@ -1,6 +1,7 @@
 package com.kt.myrestapi.lectures;
 
 import com.kt.myrestapi.lectures.dto.LectureReqDto;
+import com.kt.myrestapi.lectures.validator.LectureValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,7 @@ import java.net.URI;
 public class LectureController {
     private final LectureRepository lectureRepository;
     private final ModelMapper modelMapper;
+    private final LectureValidator lectureValidator;
 
     //Constructor Injection
 //    public LectureController(LectureRepository lectureRepository) {
@@ -30,6 +32,12 @@ public class LectureController {
     @PostMapping
     public ResponseEntity<?> createLecture(@RequestBody @Valid LectureReqDto lectureReqDto,
                                            Errors errors) {
+        //필수입력항목 체크  Java Bean Validator에 정의된 어노테이션 사용
+        if(errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+        //비지니스 로직에 따른 입력항목 체크 직접 정의한 Validator를 호출해 주어야 합니다.
+        this.lectureValidator.validate(lectureReqDto, errors);
         if(errors.hasErrors()) {
             return ResponseEntity.badRequest().body(errors);
         }
