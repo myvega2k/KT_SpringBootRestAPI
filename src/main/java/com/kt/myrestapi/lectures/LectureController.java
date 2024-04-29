@@ -1,6 +1,8 @@
 package com.kt.myrestapi.lectures;
 
+import com.kt.myrestapi.lectures.dto.LectureReqDto;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -17,6 +19,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class LectureController {
     private final LectureRepository lectureRepository;
+    private final ModelMapper modelMapper;
 
     //Constructor Injection
 //    public LectureController(LectureRepository lectureRepository) {
@@ -24,7 +27,9 @@ public class LectureController {
 //    }
 
     @PostMapping
-    public ResponseEntity<?> createLecture(@RequestBody Lecture lecture) {
+    public ResponseEntity<?> createLecture(@RequestBody LectureReqDto lectureReqDto) {
+        Lecture lecture = modelMapper.map(lectureReqDto, Lecture.class);
+
         Lecture addedLecture = lectureRepository.save(lecture);
 
         // http://localhost:8080/api/lectures/10
