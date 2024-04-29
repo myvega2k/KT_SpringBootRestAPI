@@ -22,4 +22,5 @@ public class LectureController {
         URI createUri = selfLinkBuilder.toUri();
         return ResponseEntity.created(createUri).body(lecture);
     }
+
 }
