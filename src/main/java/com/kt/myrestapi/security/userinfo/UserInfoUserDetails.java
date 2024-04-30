@@ -10,18 +10,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserInfoUserDetails implements UserDetails {
-
     private String email;
     private String password;
     private List<GrantedAuthority> authorities;
     private UserInfo userInfo;
-
     public UserInfoUserDetails(UserInfo userInfo) {
         this.userInfo = userInfo;
         this.email=userInfo.getEmail();
         this.password=userInfo.getPassword();
+        //"roles":"ROLE_ADMIN,ROLE_USER"
         this.authorities= Arrays.stream(userInfo.getRoles().split(","))
-                .map(SimpleGrantedAuthority::new)
+                .map(roleName -> new SimpleGrantedAuthority(roleName))
+                //.map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
