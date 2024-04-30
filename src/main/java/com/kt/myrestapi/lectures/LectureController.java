@@ -46,8 +46,12 @@ public class LectureController {
 //            return ResponseEntity.notFound().build();
 //        }
 //        Lecture lecture = optionalLecture.get();
+
         Lecture lecture = lectureRepository.findById(id)  //Optional<Lecture>
-                .orElseThrow(() -> new BusinessException("Lecture Not Found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> {
+                    String errMsg = String.format("Id = %d Lecture Not Found", id);
+                    return new BusinessException(errMsg, HttpStatus.NOT_FOUND);
+                });
 
         LectureResDto lectureResDto = modelMapper.map(lecture, LectureResDto.class);
         LectureResource lectureResource = new LectureResource(lectureResDto);
