@@ -13,6 +13,7 @@ public class LambdaTest {
            class MyRunnable implements Runnable {
               run()
            }
+           new Thread(new MyRunnable());
          */
 
         //1. Anonymous Inner class
