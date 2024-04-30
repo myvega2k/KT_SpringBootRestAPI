@@ -17,9 +17,13 @@ public class UserInfo {
     @Column(nullable = false)
     private String name;
 
+    //인증 할때 username
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String roles;
 }
