@@ -1,6 +1,7 @@
 package com.kt.myrestapi.lectures;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kt.myrestapi.security.userinfo.UserInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -51,5 +52,8 @@ public class Lecture {
             this.offline = true;
         }
     }
+
+    @ManyToOne
+    private UserInfo userInfo;
 
 }    
