@@ -61,7 +61,6 @@ public class LectureController {
         //생성된 Link를 LectureResource에 저장하기
         LectureResource lectureResource = new LectureResource(lectureResDto);
         lectureResource.add(linkTo(LectureController.class).withRel("query-lectures"));
-        lectureResource.add(selfLinkBuilder.withSelfRel());
         lectureResource.add(selfLinkBuilder.withRel("update-lecture"));
 
         return ResponseEntity.created(createUri).body(lectureResource);
