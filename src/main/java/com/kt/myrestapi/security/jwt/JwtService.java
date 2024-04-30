@@ -75,11 +75,11 @@ public class JwtService {
         // ACCESS_EXPIRE 3600초 => 60분
         Date exprireDate = Date.from(Instant.now().plusSeconds(ACCESS_EXPIRE));
 
-        return Jwts.builder()
-                .signWith(KEY, ALGORITHM)
-                .subject(userName)
-                .issuedAt(new Date())
-                .expiration(exprireDate)
+        return Jwts.builder()  //JwtBuilder
+                .signWith(KEY, ALGORITHM) //알고리즘 설정
+                .subject(userName)  //Payload 내에 subject 설정
+                .issuedAt(new Date()) //토큰 생성시간 설정
+                .expiration(exprireDate) //토큰 만료시간 설정
                 .compact();
     }
 
