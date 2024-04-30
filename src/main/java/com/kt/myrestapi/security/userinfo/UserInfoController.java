@@ -1,4 +1,4 @@
-package com.kt.myrestapi.security.controller;
+package com.kt.myrestapi.security.userinfo;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
