@@ -19,6 +19,7 @@ public class UserInfoController {
 
     @PostMapping("/new")
     public String addNewUser(@RequestBody UserInfo userInfo){
+        //password 암호화
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         UserInfo savedUserInfo = repository.save(userInfo);
         return savedUserInfo.getName() + " user added!!";
