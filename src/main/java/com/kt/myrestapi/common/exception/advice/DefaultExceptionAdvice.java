@@ -75,8 +75,9 @@ public class DefaultExceptionAdvice {
             
             LOGGER.error(s.getMessage(), s);
     	 } else {
-    		String msg = "예상치 못한 문제가 발생했습니다.\n관리자에게 연락 하시기 바랍니다.";
-	        result.put("message", msg);
+    		//String msg = "예상치 못한 문제가 발생했습니다.\n관리자에게 연락 하시기 바랍니다.";
+	        result.put("message", e.getMessage());
+            result.put("exception type", e.getClass().getName());
 	        result.put("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
 	        ret = new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 	        e.printStackTrace();
