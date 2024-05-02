@@ -26,4 +26,7 @@ public class UserInfo {
 
     @Column(nullable = false)
     private String roles;
+
+    @Column(nullable = false, unique = true)
+    private String userId;
 }

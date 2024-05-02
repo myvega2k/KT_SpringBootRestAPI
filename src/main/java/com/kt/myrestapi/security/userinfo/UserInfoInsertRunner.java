@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 @Component
 public class UserInfoInsertRunner implements ApplicationRunner {
@@ -18,6 +19,8 @@ public class UserInfoInsertRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         UserInfo userInfo = new UserInfo();
+        //userId에 UUID 값으로 저장
+        userInfo.setUserId(UUID.randomUUID().toString());
         userInfo.setName("adminboot");
         userInfo.setPassword(
                 passwordEncoder.encode("pwd1"));
@@ -25,6 +28,8 @@ public class UserInfoInsertRunner implements ApplicationRunner {
         userInfo.setRoles("ROLE_ADMIN,ROLE_USER");
 
         UserInfo userInfo2 = new UserInfo();
+        //userId에 UUID 값으로 저장
+        userInfo2.setUserId(UUID.randomUUID().toString());
         userInfo2.setName("userboot");
         userInfo2.setPassword(
                 passwordEncoder.encode("pwd2"));
