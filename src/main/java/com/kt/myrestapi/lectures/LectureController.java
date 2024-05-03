@@ -115,12 +115,24 @@ public class LectureController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity queryLectures(Pageable pageable, PagedResourcesAssembler<LectureResDto> assembler) {
+    public ResponseEntity queryLectures(Pageable pageable,
+                                        PagedResourcesAssembler<LectureResDto> assembler,
+                                        @CurrentUser UserInfo currentUser) {
         Page<Lecture> lecturePage = this.lectureRepository.findAll(pageable);
         //Lecture => LectureResDto 변환
         Page<LectureResDto> lectureResDtoPage =
                 //Page<T>  map(Function) Function 추상메서드 R apply(T t)
-                lecturePage.map(lecture -> modelMapper.map(lecture, LectureResDto.class));
+                //lecturePage.map(lecture -> modelMapper.map(lecture, LectureResDto.class));
+
+                //Lecture 객체와 연관된 UserInfo 객체가 있다면 LectureResDto에 email을 set 한다.
+                lecturePage.map(lecture -> {
+                    LectureResDto lectureResDto = new LectureResDto();
+                    if (lecture.getUserInfo() != null) {
+                        lectureResDto.setEmail(lecture.getUserInfo().getEmail());
+                    }
+                    modelMapper.map(lecture, lectureResDto);
+                    return lectureResDto;
+                });
         
         //Page<LectureResDto> => PagedModel<EntityModel<LectureResDto>> 변환
         //PagedModel<EntityModel<LectureResDto>> pagedModel = assembler.toModel(lectureResDtoPage);
@@ -129,6 +141,11 @@ public class LectureController {
         //RepresentationalModelAssembler의 추상메서드 D toModel(T)
         //assembler.toModel(lectureResDtoPage, resDto -> new LectureResource(resDto));
         PagedModel<LectureResource> pagedModel = assembler.toModel(lectureResDtoPage, LectureResource::new);
+
+        //토큰 인증을 했다면 create-Lecture 링크를 생성한다.
+        if (currentUser != null) {
+            pagedModel.add(linkTo(LectureController.class).withRel("create-Lecture"));
+        }
         return ResponseEntity.ok(pagedModel);
     }
 
