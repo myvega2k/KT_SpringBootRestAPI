@@ -151,7 +151,8 @@ public class LectureController {
 
     @PostMapping
     public ResponseEntity<?> createLecture(@RequestBody @Valid LectureReqDto lectureReqDto,
-                                           Errors errors) {
+                                           Errors errors,
+                                           @CurrentUser UserInfo currentUser) {
         //필수입력항목 체크  Java Bean Validator에 정의된 어노테이션 사용
         if(errors.hasErrors()) {
             return getErrors(errors);
@@ -166,8 +167,15 @@ public class LectureController {
 
         //offline,free 값을 체크해서 저장
         lecture.update();
+
+        //Lecture와 UserInfo 연관 관계 설정
+        lecture.setUserInfo(currentUser);
+
         Lecture addedLecture = lectureRepository.save(lecture);
         LectureResDto lectureResDto = modelMapper.map(addedLecture, LectureResDto.class);
+
+        //LectureResDto 에 UserInfo 객체의 email set
+        lectureResDto.setEmail(addedLecture.getUserInfo().getEmail());
 
         // http://localhost:8080/api/lectures/10
         WebMvcLinkBuilder selfLinkBuilder =
