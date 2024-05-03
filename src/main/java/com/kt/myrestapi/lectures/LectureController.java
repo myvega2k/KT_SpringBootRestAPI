@@ -89,7 +89,8 @@ public class LectureController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity getLecture(@PathVariable Integer id) {
+    public ResponseEntity getLecture(@PathVariable Integer id,
+                                     @CurrentUser UserInfo currentUser) {
 //        Optional<Lecture> optionalLecture = this.lectureRepository.findById(id);
 //        if(optionalLecture.isEmpty()) {
 //            return ResponseEntity.notFound().build();
@@ -99,7 +100,16 @@ public class LectureController {
         Lecture lecture = getExistingLecture(id);
 
         LectureResDto lectureResDto = modelMapper.map(lecture, LectureResDto.class);
+        //Lecture 객체와 연관된 UserInfo 객체가 있다면 LectureResDto 에 UserInfo 객체의 email set
+        if (lecture.getUserInfo() != null)
+            lectureResDto.setEmail(lecture.getUserInfo().getEmail());
+
         LectureResource lectureResource = new LectureResource(lectureResDto);
+        //Lecture가 참조하는 email과 인증토큰의 email이 같으면 update 링크를 생성하기
+        if ((lecture.getUserInfo() != null) && (lecture.getUserInfo().equals(currentUser))) {
+            lectureResource.add(linkTo(LectureController.class)
+                    .slash(lecture.getId()).withRel("update-lecture"));
+        }
         return ResponseEntity.ok(lectureResource);
     }
 
